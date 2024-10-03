@@ -59,16 +59,17 @@ export class BookingComponent implements OnInit {
       return;
     }
     if (this.isEditMode) {
-      this.bookingService.updateBooking(this.bookingId!, this.bookingForm.value)
-      .subscribe((res:ServerResponse)=>{
-        if (res.status == 'success') {
-          console.log('Se actualizo la reserva id:', res.bookingId);
-          this.bookingForm.reset();
-          this.router.navigate(['/']);
-        } else {
-          console.log('Error al actualizar reserva ');
-        }
-      })
+      this.bookingService
+        .updateBooking(this.bookingId!, this.bookingForm.value)
+        .subscribe((res: ServerResponse) => {
+          if (res.status == 'success') {
+            console.log('Se actualizo la reserva id:', res.bookingId);
+            this.bookingForm.reset();
+            this.router.navigate(['/']);
+          } else {
+            console.log('Error al actualizar reserva ');
+          }
+        });
     } else {
       this.bookingService
         .createBooking(this.bookingForm.value)
@@ -95,8 +96,20 @@ export class BookingComponent implements OnInit {
           lastName: bookingData.lastName || '',
           email: bookingData.email || '',
           checkIn: bookingData.checkIn ? new Date(bookingData.checkIn) : null,
-          checkOut: bookingData.checkOut ? new Date(bookingData.checkOut) : null,
+          checkOut: bookingData.checkOut
+            ? new Date(bookingData.checkOut)
+            : null,
         });
       });
+  }
+  //Todas las reservas comienzan al menos el día siguiente de la reserva,
+  addDayCheckInChange() {
+    const checkInSelected = this.bookingForm.get('checkIn')?.value;
+    if (checkInSelected) {
+      const formatDateCheckIn = new Date(checkInSelected + 'T00:00:00'); // del html viene como string
+
+      formatDateCheckIn.setDate(formatDateCheckIn.getDate() + 1);
+      this.bookingForm.get('checkIn')?.setValue(formatDateCheckIn);
+    }
   }
 }
