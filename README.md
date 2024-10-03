@@ -2,26 +2,28 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
 
+Se requiere crear una bd en MongoDB para probar la aplicacion de manera local.
+Crear archivo .env
+
+PORT:3000
+MONGO_URL: url obtenida de Mongo Atlas
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+Run `node app.js` para levantar el servidor express
+Run node mongo.js yourPassword para conectarse con la base de datos
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Backend
+se instalaron 
+npm install dotenv
+moogoose
+cors
+express
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Atajos
+A fines de optizacion del tiempos se omite el flujo de pago que requiere la realizacion de una reserva
+la autenticacion del usuario para proteger los datos de su reserva
+el manejo de errores en BookingService
+Desarrollo de estado Empty

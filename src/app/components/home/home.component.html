@@ -1,0 +1,23 @@
+<div class="grid grid-rows-[80px_1fr_80px] h-screen element">
+  <div class="h-20 text-gray-50 p-2.5 grid grid-cols-2 items-center">
+    <p class="font-extrabold text-xl ml-8">SANTO VECINO</p>
+    <a [routerLink]="['/booking-list']" routerLinkActive="active" class="justify-self-end mr-8 w-40 py-2.5 border rounded-md border-gray-50 text-center">Book your stay</a>
+  </div>
+
+  <div class="grid content-center justify-items-center">
+    <h1 class="font-sans text-6xl text-gray-50 font-semibold mb-8">
+      Above all, a home
+    </h1>
+    <a
+      [routerLink]="['/booking']"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      class="w-80 rounded-md py-2.5 text-gray-50 text-center bg-blue-600"
+      >Book now</a>
+  </div>
+  <div class="grid content-center justify-center text-gray-50">
+    <p>Santo Vecino by Guadalupe Sandoval 2024</p>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

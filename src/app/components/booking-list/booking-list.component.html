@@ -1,0 +1,14 @@
+<div class="max-w-5xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-4">Bookings</h1>
+  <p class="text-gray-600 mb-6">See our scheduled events</p>
+
+  @if(bookingList$ | async; as bookingList){ 
+    @for(item of bookingList; track item._id){
+      @defer(on viewport){      
+      <app-item [itemInput]="item"></app-item>
+      } @placeholder{
+        <div></div>
+    }
+  }
+ }
+</div>

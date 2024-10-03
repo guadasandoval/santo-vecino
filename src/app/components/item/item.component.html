@@ -1,0 +1,24 @@
+@let itemI = itemInput(); @if(itemI){
+<div class="m-8">
+  <div
+    class="flex items-center justify-between bg-white shadow-md rounded-lg p-4"
+  >
+    <div class="flex items-center space-x-6">
+      <div class="text-center">
+        <span class="block text-gray-500 text-2xl font-bold">📅</span>
+      </div>
+      <div>
+        <p class="text-gray-600 flex items-center">
+          {{ itemI.checkIn | date }} - {{ itemI.checkOut | date }}
+        </p>
+        <p class="text-gray-600 flex items-center">
+          {{ itemI.firstName }} {{ itemI.lastName }}
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <a [routerLink]="['/booking-details/', itemI._id]" routerLinkActive="router-link-active" class="text-blue-600">Details</a>
+    </div>
+  </div>
+</div>
+}
