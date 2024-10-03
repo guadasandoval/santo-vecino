@@ -36,3 +36,4 @@ A fines de optización de tiempos se omite:
 - Modales de feedback en operaciones como update y delete. En su lugar se encuentra loggeado
 un mensaje de success/ error en la consola
 - Test unitarios. En su lugar se testeo a traves de Postman
+- Diseño en versión desktop.  
