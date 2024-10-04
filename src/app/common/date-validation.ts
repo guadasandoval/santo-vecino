@@ -35,5 +35,3 @@ export function untilThirtyBefore(maxDays: number): ValidatorFn {
     return diffDays > maxDays ? { tooEarly: true } : null;
   };
 }
-
-
