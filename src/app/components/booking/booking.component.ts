@@ -102,6 +102,7 @@ export class BookingComponent implements OnInit {
         });
       });
   }
+
   //Todas las reservas comienzan al menos el día siguiente de la reserva,
   addDayCheckInChange() {
     const checkInSelected = this.bookingForm.get('checkIn')?.value;
@@ -109,7 +110,20 @@ export class BookingComponent implements OnInit {
       const formatDateCheckIn = new Date(checkInSelected + 'T00:00:00'); // del html viene como string
 
       formatDateCheckIn.setDate(formatDateCheckIn.getDate() + 1);
+      console.log(formatDateCheckIn.toDateString);
+      
       this.bookingForm.get('checkIn')?.setValue(formatDateCheckIn);
     }
+  }
+
+  checkAvailabilityBooking() {
+    const checkIn = this.bookingForm.get('checkIn')?.value;
+    const checkOut = this.bookingForm.get('checkOut')?.value;
+    this.bookingService
+      .checkAvailability(checkIn, checkOut)
+      .subscribe((res: ServerResponse) => {
+        if (res.status == 'availability') {
+        }
+      });
   }
 }

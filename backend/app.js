@@ -127,6 +127,31 @@ app.get('/booking-details/:id', (request, response, next) => {
       .catch(error => next(error))
   })
 
+  //POST chequear disponibilidad
+  app.post('/booking-check', async (request, response)=>{
+    const {checkIn, checkOut} = request.body
+    console.log(checkIn, checkOut);
+    const availability = await Booking.find({
+      checkIn: {$gte: checkOut}, // evalua la fecha de checkIn existente en la bd, con la fecha de salida que se quiere agregar
+      checkOut: {$lte: checkIn} // evalua si el checkout existente es mas chico que checkin que ingresa
+    });
+
+    if(availability.length != 0) {
+      return response.status(200)
+      .json(
+        {
+          status: "not availability",
+          message: "La habitación no se encuentra disponible en esa fecha",
+        }
+      )
+      .end()
+    } else{
+      return response.status(200)
+     .json({ status: "availability", message: 'La habitación está disponible' }).end();
+    }
+     
+  })
+
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
