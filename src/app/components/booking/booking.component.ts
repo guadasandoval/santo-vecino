@@ -1,6 +1,11 @@
 import { formatDate, JsonPipe, NgClass, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   dateValidation,
@@ -21,13 +26,14 @@ export class BookingComponent implements OnInit {
   isEditMode: boolean = false;
   bookingId: string | null = null;
   messageCheck: string = '';
-
+  bookingForm!: FormGroup;
   formBuilder = inject(FormBuilder);
   private bookingService = inject(BookingService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
+    this.initBookingForm();
     this.bookingId = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (this.bookingId) {
@@ -39,28 +45,31 @@ export class BookingComponent implements OnInit {
     this.bookingForm.get('checkIn')?.valueChanges.subscribe(() => {
       this.checkAvailabilityBooking();
     });
-  
+
     this.bookingForm.get('checkOut')?.valueChanges.subscribe(() => {
       this.checkAvailabilityBooking();
     });
+    //this.addDayCheckInChange()
   }
 
-  bookingForm = this.formBuilder.group(
-    {
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.email],
-      checkIn: [
-        null as Date | null,
-        [Validators.required, untilThirtyBefore(30)],
-      ],
-      checkOut: [null as Date | null, Validators.required],
-    },
-    {
-      // es una validacion cruzada que evalua checkin y checkout. Max 3 dias
-      validators: dateValidation(3),
-    }
-  );
+  initBookingForm() {
+    this.bookingForm = this.formBuilder.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', Validators.email],
+        checkIn: [
+          null as Date | null,
+          [Validators.required, untilThirtyBefore(30)],
+        ],
+        checkOut: [null as Date | null, Validators.required],
+      },
+      {
+        // es una validacion cruzada que evalua checkin y checkout. Max 3 dias
+        validators: dateValidation(3),
+      }
+    );
+  }
 
   onSubmit() {
     if (this.bookingForm.invalid) {
@@ -111,31 +120,20 @@ export class BookingComponent implements OnInit {
       });
   }
 
-  //Todas las reservas comienzan al menos el día siguiente de la reserva,
-  addDayCheckInChange() {
-    const checkInSelected = this.bookingForm.get('checkIn')?.value;
-    if (checkInSelected) {
-      const formatDateCheckIn = new Date(checkInSelected + 'T00:00:00'); // del html viene como string
-
-      formatDateCheckIn.setDate(formatDateCheckIn.getDate() + 1);
-      this.bookingForm.get('checkIn')?.setValue(formatDateCheckIn);
-    }
-  }
 
   checkAvailabilityBooking() {
     let checkIn = this.bookingForm.get('checkIn')?.value;
     const checkOut = this.bookingForm.get('checkOut')?.value;
-     if(checkIn && checkOut){
+    if (checkIn && checkOut) {
       this.bookingService
-      .checkAvailability(checkIn, checkOut)
-      .subscribe((res: ServerResponse) => {
-        if (res.status == 'availability') {
-          this.messageCheck = res.message;
-        } else{
-          this.messageCheck = res.message;
-        }
-      });
-  }
-    
+        .checkAvailability(checkIn, checkOut)
+        .subscribe((res: ServerResponse) => {
+          if (res.status == 'availability') {
+            this.messageCheck = res.message;
+          } else {
+            this.messageCheck = res.message;
+          }
+        });
+    }
   }
 }

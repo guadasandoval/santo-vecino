@@ -116,7 +116,6 @@
                   bookingForm.get('checkIn')?.valid
               }"
               required
-              (change)="addDayCheckInChange()"
             />
             <div
               *ngIf="bookingForm.get('checkIn')?.hasError('tooEarly')"
