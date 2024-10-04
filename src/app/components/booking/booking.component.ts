@@ -20,6 +20,7 @@ import { BookingService } from '../../services/booking.service';
 export class BookingComponent implements OnInit {
   isEditMode: boolean = false;
   bookingId: string | null = null;
+  messageCheck: string = '';
 
   formBuilder = inject(FormBuilder);
   private bookingService = inject(BookingService);
@@ -35,6 +36,13 @@ export class BookingComponent implements OnInit {
     } else {
       this.isEditMode = false; //modo crear
     }
+    this.bookingForm.get('checkIn')?.valueChanges.subscribe(() => {
+      this.checkAvailabilityBooking();
+    });
+  
+    this.bookingForm.get('checkOut')?.valueChanges.subscribe(() => {
+      this.checkAvailabilityBooking();
+    });
   }
 
   bookingForm = this.formBuilder.group(
@@ -110,20 +118,24 @@ export class BookingComponent implements OnInit {
       const formatDateCheckIn = new Date(checkInSelected + 'T00:00:00'); // del html viene como string
 
       formatDateCheckIn.setDate(formatDateCheckIn.getDate() + 1);
-      console.log(formatDateCheckIn.toDateString);
-      
       this.bookingForm.get('checkIn')?.setValue(formatDateCheckIn);
     }
   }
 
   checkAvailabilityBooking() {
-    const checkIn = this.bookingForm.get('checkIn')?.value;
+    let checkIn = this.bookingForm.get('checkIn')?.value;
     const checkOut = this.bookingForm.get('checkOut')?.value;
-    this.bookingService
+     if(checkIn && checkOut){
+      this.bookingService
       .checkAvailability(checkIn, checkOut)
       .subscribe((res: ServerResponse) => {
         if (res.status == 'availability') {
+          this.messageCheck = res.message;
+        } else{
+          this.messageCheck = res.message;
         }
       });
+  }
+    
   }
 }

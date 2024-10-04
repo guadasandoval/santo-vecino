@@ -1,11 +1,11 @@
 <div
   class="h-screen grid grid-cols-1 gap-10 lg:grid-cols-2 place-items-center bg-gray-50"
 >
-  <div>
+  <div >
     <h2 class="text-3xl font-semibold mb-6">
       Book perfect stay for your vacation
     </h2>
-    <p class="mb-6 mt-1 text-sm font-medium text-zinc-500">
+    <p class="mb-6 text-gray-500 text-md">
       Stay at our luxurious hotel with all amenities included. Experience the
       best comfort for your holidays!
     </p>
@@ -167,6 +167,10 @@
             Sorry, but your stay cannot be more than 3 days
           </div>
         </div>
+
+        @if(messageCheck){
+          <p>{{messageCheck}}</p>
+        }
 
         <button
           type="submit"

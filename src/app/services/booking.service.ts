@@ -40,7 +40,7 @@ export class BookingService {
 
   checkAvailability(checkIn: any, checkOut: any): Observable<ServerResponse> {
     return this.http.post<ServerResponse>(
-      `${this.BASE_URL}/booking-check}`, {checkIn, checkOut}
+      `${this.BASE_URL}/booking-check`, {checkIn, checkOut}
     );
   }
 }
